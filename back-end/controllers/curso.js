@@ -50,4 +50,33 @@ controller.novo = async (req, res) => {
     }
 }
 
+//Operação RETRIEVE (all), função listar()
+controller.listar = async (req, res) => {
+    try {
+        let dados = await Curso.find()  // No MongoDB, a operação find() vazia, traz todos os dados cadastrados
+        res.send(dados) //Vai com o status HTTP 200: OK
+    }
+    catch(erro) {
+        console.log(erro)
+        res.status(500).send(erro)
+    }
+}
+
+//Operação RETRIEVE (one), função obterUm()
+controller.obterUm = async (req, res) => {
+    try{
+        // Capturando o parâmetro ID da URL
+        const id = req.params.id
+        let obj = await Curso.findById(id)
+
+        // O objeto existe e foi encontrado
+        if(obj) res.send(obj)       //HTTP 200
+        //Não encontrando
+        else res.status(404).end()  //HTTP 404: Not found
+    }
+    catch(erro) {
+        console.log(erro)
+        res.status(500).send(erro)
+    }
+}
 module.exports = controller
