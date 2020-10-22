@@ -29,13 +29,13 @@ app.use('/teste', teste)
 const curso = require('./routes/curso')
 app.use('/curso', curso)
 
-const professor = require('./routes/professor')
-app.use('/professor', professor)
+const galeria = require('./routes/galeria')
+app.use('/galeria', galeria)
 
-const sala_aula = require('./routes/sala_aula')
-app.use('/sala-aula', sala_aula)
+const cristal = require('./routes/cristal')
+app.use('/cristal', cristal)
 
-const turma = require('./routes/turma')
-app.use('/turma', turma)
+const cadastro = require('./routes/cadastro')
+app.use('/cadastro', cadastro)
 
 module.exports = app;
