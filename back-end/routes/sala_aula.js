@@ -1,4 +1,4 @@
-const controller = require('../controllers/galeria')
+const controller = require('../controllers/sala_aula')
 const express = require('express')
 
 const router = express.Router()
@@ -9,4 +9,4 @@ router.get('/:id', controller.obterUm)
 router.put('/', controller.atualizar)
 router.delete('/', controller.excluir)
 
-module.exports = router
+module.exports = router 

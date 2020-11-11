@@ -1,4 +1,5 @@
-const controller = require('../controllers/cadastro')
+  
+const controller = require('../controllers/turma')
 const express = require('express')
 
 const router = express.Router()

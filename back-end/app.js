@@ -14,6 +14,12 @@ db(`mongodb+srv://${dbUser}:${dbPass}@cluster0.lzes7.gcp.mongodb.net/${dbName}?r
 
 var app = express();
 
+// Habilita a chamada do back-end a partir de um servidor distinto
+// É necessário instalar:
+// npm install cors --save
+const cors = require('cors')
+app.use(cors())
+
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -29,13 +35,13 @@ app.use('/teste', teste)
 const curso = require('./routes/curso')
 app.use('/curso', curso)
 
-const galeria = require('./routes/galeria')
-app.use('/galeria', galeria)
+const professor = require('./routes/professor')
+app.use('/professor', professor)
 
-const cristal = require('./routes/cristal')
-app.use('/cristal', cristal)
+const sala_aula = require('./routes/sala_aula')
+app.use('/sala-aula', sala_aula)
 
-const cadastro = require('./routes/cadastro')
-app.use('/cadastro', cadastro)
+const turma = require('./routes/turma')
+app.use('/turma', turma)
 
 module.exports = app;

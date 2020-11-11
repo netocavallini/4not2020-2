@@ -6,4 +6,4 @@ router.get('/', function(req, res, next) {
   res.send('Isto é um teste COM NODEMON');
 });
 
-module.exports = router;   
+module.exports = router;
