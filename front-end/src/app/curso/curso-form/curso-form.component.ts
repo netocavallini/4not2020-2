@@ -1,4 +1,9 @@
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { CursoService } from './../curso.service';
+import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+import { NgForm } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-curso-form',
@@ -18,9 +23,66 @@ export class CursoFormComponent implements OnInit {
 
   title : string = 'Novo curso'
 
-  constructor() { }
+  constructor(
+    private cursoSrv : CursoService,
+    private snackBar : MatSnackBar,
+    private location : Location,
+    private actRoute : ActivatedRoute
+  ) { }
 
-  ngOnInit(): void {
+  async ngOnInit() {
+      // Verifica se existe o parâmetro ID na URL (rota)
+      if(this.actRoute.snapshot.params['id']){
+          try{
+            // 1) Acionar o back-end para acionar esse registro
+            // e disponibilizá-lo para edição
+            this.curso = await this.cursoSrv.obterUm(this.actRoute.snapshot.params['id'])
+            // 2) Mudar o título da página
+            this.title = 'Editando curso . . . '
+          }
+          catch(erro){
+              console.log(erro)
+              this.snackBar.open('ERRO: não foi possível carregar dados para edição.', 
+              'Que pena!', { duration: 5000})
+          }
+      }
   }
 
+  async salvar(form: NgForm){
+    if(form.valid){
+      try {
+        // 1) Salvar os dados no back-end
+        // Se o curso já existir (caso de edição), ele já terá
+        // o atributo _id
+        if (this.curso._id){
+            await this.cursoSrv.atualizar(this.curso) // Atualização
+        }
+        else {
+            await this.cursoSrv.novo(this.curso)
+        }
+        // 2) Dar o feedback para o usuário
+        this.snackBar.open('Dados salvos com sucesso!', 'Entendi', 
+          {duration: 5000})
+        // 3) Voltar ao componente de listagem
+        this.location.back()
+      }
+      catch(erro) {
+        console.log(erro)
+        this.snackBar.open('ERRO: Não foi possível salvar os dados.', 'Que pena!',
+        { duration: 5000})
+      }
+    }
+  }
+
+  voltar(form: NgForm) {  
+    let result = true
+    // form.dirty = formulário "sujo", não salvo (via código)
+    // form.touched = o conteúdo de algum campo foi elterado (via usuário)
+    if(form.dirty && form.touched){
+      result = confirm('Há dados não salvos. Deseja realmente voltar?')
+    }
+
+    if(result) this.location.back()
+    
+  }
 }
